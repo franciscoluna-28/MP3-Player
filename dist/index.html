@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+    <link rel="manifest" href="./site.webmanifest">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New MP3 Player</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <script defer src="/dist/app.js"></script>
+    <script src="https://kit.fontawesome.com/d5a98b8c2b.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+    </head> 
+
+    <header>
+        <button>HOME</button>
+    </header>
+    <div class="mainContent">
+        <div class="player">
+
+
+            <div class="container">
+
+                <div class="imagePlaceholder">
+                    <img id="songImage"src="./resources/giveItImage.jpg">
+                </div>
+
+                <div id="artistContainer">
+                    <span id="trackName">Unknown</span>
+                    <span id="artistName">Unknown</span>
+                </div>
+
+                <div id="audioProgressTextContainer">
+                    <span id="audioCurrentTime"></span>
+                    <span id="audioTotalLenght"></span>
+                </div>
+
+                
+                <div class="volumeAndProgressBar">                
+                    <div id="progressBarContainer">
+                    <input type="range" min="1" max="100"
+                    value="0" id="trackProgress">
+                </div> 
+                <div class="volumeControl">
+                    <i class="fa-solid fa-volume-high"></i><input type="range"min="1" max="100" value="100" class="slider" id="volumeSlider"></div>
+            </div></div>
+
+
+
+                <div class="buttonContainer">
+                    <button id="nextLeftIcon"><i class="fa-solid fa-circle-chevron-left"></i></button>
+                    <button id="playIcon"><i id="icon" class="fa-solid fa-circle-play"></i></button>
+                    <button id="nextRightIcon"><i class="fa-solid fa-circle-chevron-right"></i></button>
+                </div>
+
+
+            <div id="xd">
+
+            </div>
+        </div>
+    </div>
+    
+
+
+
+
+<body>
+    
+</body>
+</html>
