@@ -1,0 +1,158 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=Lato:wght@100;300;400;700;900&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+body {
+  background-color: #222222;
+  height: 100%;
+  font-family: "Lato", sans-serif;
+}
+
+.mainContent {
+  height: 100%;
+  width: 100%;
+  padding-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.player .container {
+  height: 100%;
+}
+.player .imagePlaceholder {
+  height: 17.5rem;
+  width: 100%;
+}
+.player .imagePlaceholder img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 20px;
+  padding: 1rem, 2rem;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.buttonContainer {
+  display: flex;
+  display: flex;
+  justify-content: center;
+  column-gap: 2rem;
+  margin-top: -1rem;
+}
+.buttonContainer button {
+  background: transparent;
+  border: none;
+  font-size: 3rem;
+  color: white;
+  filter: drop-shadow(0 0 0.15rem black);
+}
+
+.artistContainer {
+  display: flex;
+  justify-content: center;
+  filter: drop-shadow(0 0 0.15rem black);
+}
+
+#trackName {
+  padding-top: 1rem;
+  display: flex;
+  justify-content: center;
+  color: white;
+  text-transform: uppercase;
+  font-weight: 400;
+  letter-spacing: 2px;
+  font-size: 2.5rem;
+  filter: drop-shadow(0 0 0.15rem black);
+}
+
+#icon {
+  font-size: 4rem;
+}
+
+#artistName {
+  padding-top: 0.25rem;
+  display: flex;
+  justify-content: center;
+  color: white;
+  text-transform: uppercase;
+  font-weight: 400;
+  letter-spacing: 2px;
+  font-size: 2.5rem;
+  font-weight: 200;
+  font-size: 1.5rem;
+  font-family: "Inter", sans-serif;
+}
+
+.volumeAndProgressBar {
+  padding-top: 0.75rem;
+}
+.volumeAndProgressBar #progressBarContainer {
+  display: flex;
+  justify-content: center;
+}
+.volumeAndProgressBar #trackProgress {
+  width: 100%;
+  height: 5px;
+  filter: drop-shadow(0 0 0.15rem black);
+}
+.volumeAndProgressBar .volumeControl {
+  display: flex;
+  justify-content: center;
+  filter: drop-shadow(0 0 0.15rem black);
+  padding-top: 1.5rem;
+}
+.volumeAndProgressBar .fa-volume-high {
+  color: white;
+}
+
+.volumeControl {
+  display: flex;
+  justify-content: center;
+}
+.volumeControl .fa-volume-high {
+  padding-right: 0.5rem;
+}
+
+#audioProgressTextContainer {
+  display: flex;
+  justify-content: center;
+  column-gap: 12.5rem;
+  padding-top: 1rem;
+  color: white;
+  font-size: 1rem;
+}
+
+#homeButton {
+  border: 2px solid #52B788;
+  border-radius: 12px;
+  background: none;
+  margin: 3rem 0 0 3rem;
+  width: 8rem;
+  height: 2rem;
+  display: inline-block;
+  text-transform: uppercase;
+  color: white;
+  font-weight: 700;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+#footer {
+  display: flex;
+  justify-content: center;
+  padding-top: 5rem;
+}
+
+a:link {
+  color: #585858;
+}
+
+a:visited {
+  color: #585858;
+  text-decoration: none;
+}
+
+a {
+  text-decoration: none;
+}
