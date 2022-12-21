@@ -117,3 +117,22 @@ body {
   color: white;
   font-size: 1rem;
 }
+
+#footer {
+  display: flex;
+  justify-content: center;
+  padding-top: 5rem;
+}
+
+a:link {
+  color: #585858;
+}
+
+a:visited {
+  color: #585858;
+  text-decoration: none;
+}
+
+a {
+  text-decoration: none;
+}
