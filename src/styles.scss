@@ -42,6 +42,8 @@ body {
     border: none;
     font-size: 3rem;
     color: white;
+
+
 }
 
 @mixin artistText{
@@ -73,6 +75,14 @@ body {
     height: 5px;
 }
 
+@mixin shadowStyle{
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+@mixin dropShadowStyle{
+    filter: drop-shadow(0 0 0.15rem black);
+}
+
 
 .mainContent{
     height: 100%;
@@ -88,12 +98,14 @@ body {
     } .imagePlaceholder{
         height: 17.5rem;
         width: 100%;
+
         
         img{
             max-width:100%;
             max-height:100%;
             border-radius: 20px;
             padding: 1rem, 2rem;
+            @include shadowStyle();
         }
     }
 }
@@ -106,15 +118,20 @@ body {
 
  button {
     @include buttonStyles();
+    @include dropShadowStyle();
 }}
 
 .artistContainer{
     @include flexCenter();
+    @include dropShadowStyle();
+
 
 } #trackName {
     @include paddingStyle();
     @include flexCenter();
     @include artistText();
+    @include dropShadowStyle();
+    
 }
 
 #icon{
@@ -134,6 +151,7 @@ body {
     padding-top: 0.25rem;
     @include flexCenter();
     @include artistTextSecondary();
+
 }
 
 
@@ -143,8 +161,10 @@ body {
         @include flexCenter();
     } #trackProgress {
         @include progressBarStyle();
+         @include dropShadowStyle();
     } .volumeControl{
         @include flexCenter();
+        @include dropShadowStyle();
         padding-top: 1.5rem;
     } .fa-volume-high {
         color: white;
@@ -165,3 +185,35 @@ body {
     color: white;
     font-size: 1rem;
 }
+
+#homeButton{
+    border: 2px solid #52B788;
+    border-radius: 12px;
+    background: none;
+    margin: 3rem 0 0 3rem;
+    width: 8rem;
+    height: 2rem;
+    display: inline-block;
+    text-transform: uppercase;
+    color: white;
+    font-weight: 700;
+    @include shadowStyle();
+}
+
+#footer{
+    @include flexCenter();
+    padding-top: 5rem;
+}
+
+a:link {
+    color: #585858;
+  }
+  
+  a:visited {
+    color: #585858;
+    text-decoration: none;
+  }
+  
+  a {
+    text-decoration: none;
+  }
