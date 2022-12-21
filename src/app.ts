@@ -1,8 +1,18 @@
+//Todo create functionality to play
+//Todo to change song
+//Todo to change song backwards
+//Todo To loop song
+//Todo to inject HTML elements
+//Todo to create functionality to change volume
+
+let mousedown = false
+let currentIndex = 0;
+
 // DOM elements
 const playButton = document.getElementById("playIcon")
 const nextLeft = document.getElementById("nextLeftIcon")
 const nextRight = document.getElementById("nextRightIcon")
-const progressBar: any = document.getElementById("trackProgress")
+const progressBar = document.getElementById("trackProgress")
 const iconElement = document.getElementById("icon")
 const artist = document.getElementById("artistName")
 const track = document.getElementById("trackName")
@@ -10,222 +20,243 @@ const trackImage = document.getElementById("songImage")
 const trackVolume = document.getElementById("volumeSlider")
 let audioCurrentTimeDOM = document.getElementById("audioCurrentTime")
 let audioTotalLenght = document.getElementById("audioTotalLenght")
-let volumeIcon = document.getElementById("volumeIcon")
-const repeatIcon = document.getElementById("repeatIcon")
-
-//global variables set up
-let globalTrack: HTMLAudioElement = document.createElement("audio");
-let isPlaying: boolean = false;
-let trackIndex: number = 0;
-let updateTimer;
-
-
-interface Track{
-    name: string;
-    artist: string;
-    imagePath: string;
-    songPath: string;
-}
-
-let trackList: Track[] = [{
-    name: "Euphoria",
-    artist: "xFran",
-    imagePath: "./dist/resources/euphoria.jpg",
-    songPath: "./dist/resources/Euphoria.mp3"
-}, 
-{
-    name: "Give It",
-    artist: "xFran",
-    imagePath: "./dist/resources/giveItImage.jpg",
-    songPath: "./dist/resources/GiveIt.mp3"
-}, 
-{
-    name: "Colors",
-    artist: "Tobu",
-    imagePath: "./dist/resources/tobuColorsImage.jpg",
-    songPath: "./dist/resources/Tobu - Colors (1).mp3"
-    },
-{
-  name: "Stronger",
-  artist: "TheFatRat",
-  imagePath: "./dist/resources/strongerImage.jpg",
-  songPath: "./dist/resources/stronger.mp3"
-},
-{
-  name: "Monody",
-  artist: "TheFatRat",
-  imagePath: "./dist/resources/monody.jpg",
-  songPath: "./dist/resources/TheFatRat - Monody (feat. Laura Brehm).mp3"
-}
-];
+const destroyButton = document.getElementById("destroyButton")
 
 
 
-function loadTrack (trackIndex) {
-    resetValues();
+// Track object
+class Track{
+    private readonly artist: string;
+    private readonly trackName: string;
+    public location: string; 
+    public playing: boolean; 
+    public volume: number;
+    private createdTrack: HTMLAudioElement;
+    public currentTime: number;
+    public imageSRC: string;
+    public totalTime: number;
 
-    // Load a new track
-    globalTrack.src = trackList[trackIndex].songPath;
-    globalTrack.load();
-    console.log(globalTrack.src)
+    constructor(artist: string, trackName: string, location: string, imageSRC: string) {
+        this.artist = artist;
+        this.trackName = trackName;
+        this.location = location;
+        this.playing = true;
+        this.createdTrack = new Audio(this.location)
+        this.volume = this.createdTrack.volume;
+        this.currentTime = this.createdTrack.currentTime
+        this.imageSRC= imageSRC;
+        this.totalTime = this.createdTrack.duration
+    }
 
+    play(){
+        this.createdTrack.play()
 
-    //updating track details
-    trackImage.src = trackList[trackIndex].imagePath;
-    artist.textContent = trackList[trackIndex].artist;
-    track.textContent = trackList[trackIndex].name;
-    console.log(trackImage.src, track.textContent, artist.textContent)
-
-
-    updateTimer = setInterval(seekUpdate, 1000);
-
-
-    globalTrack.addEventListener("ended", nextTrack);
-}
-
-
-
-
-
-
-//setting up default values when a new track is loaded
-const resetValues = () => {
-    audioCurrentTimeDOM.textContent = "00:00";
-    audioTotalLenght.textContent = "00:00";
-    progressBar.value = 0;
-}
-
-
-//function to play and pause the track
-function playpauseTrack(){
-
-    if(!isPlaying)
-    
-    playTrack();
-    else {
-        pauseTrack();
+        
 
     }
-}
 
+    pause(){
+        this.createdTrack.pause()
+    }
 
-//play the track
-function playTrack() {
+    refreshDOM(){
+        track.textContent = this.trackName
+        artist.textContent = this.artist
+        this.updateImage()
+        this.updateVolume()
+        this.timeUpdate()
+        this.seekTo()
+        this.refresh()
 
-    globalTrack.play();
-    isPlaying = true;
-    playButton.innerHTML = '<i id="icon" class="fa-solid fa-pause-circle"></i>';
-}
-   
-  const pauseTrack = () => {
-    globalTrack.pause();
-    isPlaying = false;
-    playButton.innerHTML = '<i id="icon" class="fa-solid fa-play-circle"></i>';
+        
 
+    }
 
-  }
-   
-  const nextTrack = () => {
-    // Go back to the first track if the
-    // current one is the last in the track list
-    if (trackIndex < trackList.length - 1)
-      trackIndex += 1;
-    else trackIndex = 0;
-      
-    // Load and play the new track
-    loadTrack(trackIndex);
-    playTrack();
+    stop(){
+        this.createdTrack.pause()
+        this.createdTrack.currentTime = 0
+    }
+
+    updateImage(){
+        trackImage.src = this.imageSRC;
+    }
     
-  }
-   
-  const prevTrack = () => {
-    if (trackIndex > 0)
-      trackIndex -= 1;
-    else trackIndex = trackList.length - 1;
-        // Load and play the new track
-        loadTrack(trackIndex);
-        playTrack();
 
-  }
+    updateVolume(){
+        trackVolume.addEventListener("change", (e) => {
+            this.createdTrack.volume = e.currentTarget.value / 100
 
-//sliders
-function seekTo() {
-    let seekTo = globalTrack.duration * (progressBar.value / 100);
-    globalTrack.currentTime = seekTo;
-  }
-   
-  function setVolume() {
-    globalTrack.volume = trackVolume.value / 100;
-    if (globalTrack.volume === 0){
-        volumeIcon.classList.toggle("fa-volume-xmark")
-  } else {
-    volumeIcon.classList.remove("fa-volume-xmark")
-  }}
-   
-  function seekUpdate() {
-    let seekPosition = 0;
-   
-    // Check if the current track duration is a legible number
-    if (!isNaN(globalTrack.duration)) {
-      seekPosition = globalTrack.currentTime * (100 / globalTrack.duration);
-      progressBar.value = seekPosition;
+    })}
 
-      const audioTotalTime = globalTrack.duration
-      const secondsToMinutes = Math.floor(audioTotalTime / 60) + ':' + ('0' + Math.floor(audioTotalTime % 60)).slice(-2);
-      const audioCurrentTime = globalTrack.currentTime
-      const secondsToMinutes2 =  Math.floor(audioCurrentTime / 60) + ':' + ('0' + Math.floor(audioCurrentTime % 60)).slice(-2);
-  
-      
-  
-      audioTotalLenght.textContent = secondsToMinutes
-      audioCurrentTimeDOM.textContent = secondsToMinutes2
-
-    } else {
-        audioCurrentTimeDOM.textContent = ""
+    refreshTotalDuration(){
+        const audioTotalTime = this.createdTrack.duration
+        const secondsToMinutes = Math.floor(audioTotalTime / 60) + ':' + ('0' + Math.floor(audioTotalTime % 60)).slice(-2);
+        const audioCurrentTime = this.createdTrack.currentTime
+        const secondsToMinutes2 =  Math.floor(audioCurrentTime / 60) + ':' + ('0' + Math.floor(audioCurrentTime % 60)).slice(-2);
+        if(Number.isNaN(audioTotalTime)  === true){
         audioTotalLenght.textContent = ""
+        audioCurrentTimeDOM.textContent = ""
+        } else {
+            audioTotalLenght.textContent = secondsToMinutes
+            audioCurrentTimeDOM.textContent = secondsToMinutes2
+        }
+    }
+
+      timeUpdate(){
+        this.createdTrack.addEventListener("timeupdate", () => {
+            this.refreshTotalDuration()
+            this.seekUpdate()
+
+            })
+      }
+
+      seekUpdate() {
+        let seekPosition = 0;
+       
+        // Check if the current track duration is a legible number
+        if (!isNaN(this.createdTrack.duration)) {
+          seekPosition = this.createdTrack.currentTime * (100 /this.createdTrack.duration);
+          progressBar.value = seekPosition;
+        }}
+            
+        seekTo() {
+            progressBar.addEventListener("change", () => {
+                const audioTotalTime = this.createdTrack.duration
+                let seekTo = audioTotalTime * (progressBar.value / 100)
+                this.createdTrack.currentTime = seekTo;        
+            })};
+
+        refresh(){
+            this.createdTrack.addEventListener("ended", () => {
+                iconElement.classList.toggle("fa-circle-pause")
+                this.createdTrack.currentTime = 0
+                progressBar.value = 0
+
+            })
+        }
+
+/*         finished(){
+            this.createdTrack.addEventListener("ended", () => {
+                this.stop()
+                currentTrack.stop()
+                nextTrackIndex()
+                console.log(nextTrackIndex())
+                checkPlayHandlerStatus()
+                currentTrack.refreshDOM()
+                iconElement.classList.toggle("fa-circle-pause")
+                currentTrack.refresh() */
+
+            }
+
+
+
+
+
+// existent tracks
+const giveIt = new Track("xFran", "Give It", "/dist/resources/GiveIt.mp3", "/dist/resources/giveItImage.jpg");
+const euphoria = new Track("xFran", "Euphoria", "/dist/resources/Euphoria.mp3", "/dist/resources/euphoria.jpg")
+const colors = new Track("Tobu", "Colors", "/dist/resources/Tobu - Colors (1).mp3","/dist/resources/tobuColorsImage.jpg")
+
+//tracks array
+let myTracks = [euphoria, giveIt, colors]
+
+//current track set up using the current index
+let currentTrack = myTracks[currentIndex]
+let currentTrackVolume = myTracks[currentIndex].volume
+currentTrack.refreshDOM()
+currentTrack.updateVolume()
+currentTrack.refresh()
+
+
+/* myTracks.forEach(track => {
+    let x = document.createElement("p")
+    let img = document.createElement("img")
+    x.textContent = track.trackName;
+    img.src = track.imageSRC
+    document.body.appendChild(x)
+    document.body.appendChild(img)
+}); */
+
+//play button functionalities
+const playHandler = (button: HTMLButtonElement) => {
+    button.addEventListener("click", () => {
+        updatePlayHandlerDOM();
+        checkPlayHandlerStatus();
+        currentTrack.refreshDOM();
+        
+        
+    })
+}
+
+const updatePlayHandlerDOM = () => {
+        iconElement.classList.toggle("fa-circle-pause")
+    }
+
+
+//depending on the UI's state for now (prone to change)
+const checkPlayHandlerStatus = () => {
+        if(iconElement.classList.contains("fa-circle-pause")){
+        currentTrack.play();
+    } else {
+        currentTrack.pause();
     }
 }
 
+//initialazing the play button
+playHandler(playButton)
 
-//laods the first track in the tracklist
-loadTrack(trackIndex);
+
+//next track functionalities
+const nextTrackIndex = () => {
+    currentTrack = myTracks[++currentIndex]
+    if(currentIndex > myTracks.length - 1){
+        currentIndex = 0
+        currentTrack = myTracks[currentIndex]
+        currentTrack.refresh()
+}}
 
 
-//event listeners
-playButton.addEventListener('click', function(){
-    playpauseTrack();
+const nextTrackHandler = (button: HTMLButtonElement) => {
+    button.addEventListener("click", () => {
+        currentTrack.stop()
+        nextTrackIndex()
+        currentTrack.refreshDOM()
+        checkPlayHandlerStatus()
+        currentTrack.refresh()
+        progressBar.value = 0
+    })
+}
+
+//initializing the next track button
+nextTrackHandler(nextRight)
+
+//last track functionalities
+const pastTrackIndex = () => {
+    currentTrack = myTracks[--currentIndex]
+    if(currentIndex < 0){
+        currentIndex = myTracks.length - 1
+        currentTrack = myTracks[currentIndex]
+        currentTrack.refresh()
+}}
+
+const pastTrackHandler = (button: HTMLButtonElement) => {
+    button.addEventListener("click", () => {
+        currentTrack.stop()
+        pastTrackIndex()
+        currentTrack.refreshDOM()
+        checkPlayHandlerStatus()
+        currentTrack.refresh()
+        progressBar.value = 0
+    })}
+
+pastTrackHandler(nextLeft)
+
+//removed the autoplay function after finishing a track
+//because of unexpected behaviour 
+
+destroyButton.addEventListener("click", () => {
+
 })
-
-nextRight.addEventListener("click", function(){
-    nextTrack();
-})
-
-nextLeft.addEventListener("click", function(){
-    prevTrack();
-})
-
-progressBar.addEventListener("change", function(){
-    seekTo();
-});
-
-trackVolume.addEventListener("change", function(){
-    setVolume();
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
